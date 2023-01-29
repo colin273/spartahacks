@@ -1,0 +1,53 @@
+import win_magnification as mag
+import time
+import os
+
+mag_api = mag.WinMagnificationAPI()
+mag_api2 = mag_api
+
+
+DEFAULT = mag.const.DEFAULT_COLOR_EFFECT
+mag_api.fullscreen.color_effect.raw = DEFAULT
+type = 0
+
+ColorTypes = {
+    "No Effect"         :mag.const.COLOR_NO_EFFECT,
+    "Inversion"         :mag.const.COLOR_INVERSION_EFFECT,
+    "Grayscale"         :mag.const.COLOR_GRAYSCALE_EFFECT,
+    "Grayscale Inverted":mag.const.COLOR_INVERTED_GRAYSCALE_EFFECT,
+    "Sepia"             :mag.const.COLOR_SEPIA_EFFECT,
+    "Deuternaopia"      :mag.const.COLOR_BLIND_DEUTERANOPIA_EFFECT,
+    "Protanopia"        :mag.const.COLOR_BLIND_PROTANOPIA_EFFECT,
+    "Tritanopia"        :mag.const.COLOR_BLIND_TRITANOPIA_EFFECT
+}
+
+
+def setcolor(type):
+    #Apply a specified color filter.
+    mag_api.fullscreen.color_effect.raw = ColorTypes[type]
+
+    #Apply animation
+    mag_api.fullscreen.color_effect.make_transition(
+    end= ColorTypes[type],
+    initial_power=0,
+    )
+
+    for i in range(100):
+        mag_api.fullscreen.color_effect.transition_power += 0.01
+        time.sleep(0.05)
+
+
+def resetcolor():
+    #Reset a color filter.
+    mag_api.fullscreen.color_effect.reset()
+
+def getColor():
+    return ColorTypes[type]
+ 
+    
+
+setcolor("Sepia")
+os.system("pause")
+
+
+
